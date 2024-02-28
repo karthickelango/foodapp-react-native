@@ -2,7 +2,6 @@ import Colors from '@/src/constants/Colors';
 import { StyleSheet, Text, Image, Pressable } from 'react-native';
 import { Product } from '../types';
 import { Link } from 'expo-router';
-import productDetailsPage from '../app/(tabs)/menu/[id]';
 
 
 // add type
