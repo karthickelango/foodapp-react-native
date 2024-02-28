@@ -1,17 +1,86 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
 import React from 'react'
 import { Stack, useLocalSearchParams } from 'expo-router'
+import products from '@/assets/data/products'
+import Colors from '@/src/constants/Colors'
+import { useState } from 'react'
+import Button from '@/src/components/button'
 
+const sizes = ['S', 'M', 'L', 'XL']
 const productDetailsPage = () => {
-  const {id}  = useLocalSearchParams()
+  const { id } = useLocalSearchParams()
+  const [selectedSize, setSelectedSize] = useState('M')
+  const product = products.find(p => p.id.toString() === id)
+  const addToCart = () => {
+    console.warn('Card', selectedSize)
+  }
+  // default image
+  const defaultImg = 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png'
+  if (!product) {
+    return <Text>Item not found</Text>
+  }
   return (
-    <View>
-      <Stack.Screen options={{title: 'Details'}}/>
-      <Text>product : {id}</Text>
+    <View style={styles.container}>
+      <Stack.Screen options={{ title: 'Details' }} />
+      <Image style={styles.image} source={{ uri: product.image || defaultImg }} resizeMode='contain' />
+      <Text style={styles.title}>{product.name}</Text>
+      <Text style={styles.title}>Select Size</Text>
+      <View style={styles.sizes}>
+        {
+          sizes.map(size => (
+            <Pressable
+              onPress={() => setSelectedSize(size)}
+              style={[styles.size, { backgroundColor: selectedSize === size ? '#F2F2F2' : 'white' }]} key={size}>
+              <Text style={[styles.textSize, { color: selectedSize === size ? 'black' : '#C0C0C0' }]}>{size}</Text>
+            </Pressable>
+          ))
+        }
+      </View>
+      <Text style={styles.price}>${product.price}</Text>
+      <Button onPress={() => addToCart()} text='Add to cart' />
     </View>
   )
 }
 
 export default productDetailsPage
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+    padding: 10,
+    borderRadius: 20,
+    marginBottom: 10,
+    flex: 1,
+  },
+  image: {
+    width: "100%",
+    aspectRatio: 1
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginVertical: 10,
+  },
+  price: {
+    color: Colors.light.tint,
+    fontWeight: 'bold',
+    marginTop: 'auto'
+  },
+  sizes: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginVertical: 10
+  },
+  size: {
+    backgroundColor: '#C0C0C0',
+    width: 50,
+    aspectRatio: 1,
+    borderRadius: 25,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  textSize: {
+    fontSize: 20,
+    fontWeight: '500',
+  }
+});
