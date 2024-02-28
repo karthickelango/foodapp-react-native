@@ -5,13 +5,15 @@ import { randomUUID } from 'expo-crypto'
 type CartType = {
     items: CartItem[],
     addItem: (product: Product, size: CartItem['size']) => void,
-    updateQuantity: (itemId: string, amount: -1 | 1) => void
+    updateQuantity: (itemId: string, amount: -1 | 1) => void,
+    total: number
 }
 
 const CartContex = createContext<CartType>({
     items: [],
     addItem: () => { },
-    updateQuantity: () => { }
+    updateQuantity: () => { },
+    total: 0
 })
 
 const CartProvider = ({ children }: PropsWithChildren) => {
@@ -41,9 +43,10 @@ const CartProvider = ({ children }: PropsWithChildren) => {
     const updateQuantity = (itemId: string, amount: -1 | 1) => {
         setItems(items.map((item) => item.id === itemId ? {...item, quantity: item.quantity + amount} : item).filter(item => item.quantity > 0))
     }
-
+    // total amount 
+    const total = items.reduce((sum, item) => sum += item.product.price * item.quantity, 0)
     return (
-        <CartContex.Provider value={{ items, addItem, updateQuantity }}>
+        <CartContex.Provider value={{ items, addItem, updateQuantity, total }}>
             {children}
         </CartContex.Provider>
     )
