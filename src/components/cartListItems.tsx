@@ -32,7 +32,7 @@ const CartListItem = ({ cartItem }: CartListItemProps) => {
         <FontAwesome
           onPress={() => updateQuantity(cartItem.id, -1)}
           name="minus"
-          color="gray"
+          color="gray" 
           style={{ padding: 5 }}
         />
 
