@@ -14,7 +14,7 @@ const defaultImg = 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/def
 const ProductListItem = ({ product }: ProductListItemProps) => {
     return (
         <View style={styles.container} key={product.id}>
-            <Image style={styles.image} source={{ uri: product.image || defaultImg }} />
+            <Image style={styles.image} source={{ uri: product.image || defaultImg }} resizeMode='contain'/>
             <Text style={styles.title}>{product.name}</Text>
             <Text style={styles.price}>${product.price}</Text>
         </View>
