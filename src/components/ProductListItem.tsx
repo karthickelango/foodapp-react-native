@@ -13,8 +13,9 @@ type ProductListItemProps = {
 const defaultImg = 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png'
 
 const ProductListItem = ({ product }: ProductListItemProps) => {
+    const segment = useSegments()
     return (
-        <Link href={`../menu/${product.id}`} asChild>
+        <Link href={`/${segment[0]}/menu/${product.id}`} asChild>
             <Pressable style={styles.container} key={product.id}>
                 <Image style={styles.image} source={{ uri: product.image || defaultImg }} resizeMode='contain' />
                 <Text style={styles.title}>{product.name}</Text>
