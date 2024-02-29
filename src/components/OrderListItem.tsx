@@ -15,7 +15,7 @@ const OrderListItem = ({ order }: OrderListItemProps) => {
   const segments = useSegments();
 
   return (
-    <Link href={`/${segments[0]}/orders/${order.id}`} asChild>
+    <Link href={`./(user)/orders/${order.id}`} asChild>
       <Pressable style={styles.container}>
         <View>
           <Text style={styles.title}>Order #{order.id}</Text>

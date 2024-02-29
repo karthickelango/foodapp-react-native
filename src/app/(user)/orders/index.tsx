@@ -1,15 +1,17 @@
-import { FlatList, View } from 'react-native';
-import products from '@/assets/data/products';
-import ProductListItem from '@/src/components/ProductListItem';
+import { FlatList } from 'react-native';
+import orders from '../../../../assets/data/orders';
+import OrderListItem from '../../../components/OrderListItem';
+import { Stack } from 'expo-router';
 
-export default function MenuScreen() {
+export default function OrdersScreen() {
   return (
-    <FlatList
-      data={products}
-      renderItem={({ item }) => <ProductListItem product={item} />}
-      numColumns={2} 
-      contentContainerStyle={{gap:10, padding:10}}
-      columnWrapperStyle={{gap:10}}/>
+    <>
+      <Stack.Screen options={{ title: 'Orders' }} />
+      <FlatList
+        data={orders}
+        contentContainerStyle={{ gap: 10, padding: 10 }}
+        renderItem={({ item }) => <OrderListItem order={item} />}
+      />
+    </>
   );
 }
-
