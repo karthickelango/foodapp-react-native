@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput, Image } from 'react-native'
+import { StyleSheet, Text, View, TextInput, Image, Alert } from 'react-native'
 import React, { useState } from 'react'
 import Button from '@/src/components/button'
 import Colors from '@/src/constants/Colors'
@@ -7,17 +7,17 @@ import { Stack, useLocalSearchParams } from 'expo-router'
 import products from '@/assets/data/products'
 
 const create = () => {
+    const { id } = useLocalSearchParams()
+    const isUpdating = !!id
+    // get product
+    const product = products.find(p => p.id.toString() === id)
+    // defaultImg
+    const defaultImg = 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png'
+
+    const [image, setImage] = useState<string | null>(null);
     const [name, setName] = useState('')
     const [price, setPrice] = useState('')
     const [error, setError] = useState('')
-    const [image, setImage] = useState<string | null>(null);
-    const { id } = useLocalSearchParams()
-    const isUpdating = !!id
-
-    const product = products.find(p => p.id.toString() === id)
-
-    // defaultImg
-    const defaultImg = 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png'
 
 
     // validation
@@ -48,9 +48,17 @@ const create = () => {
         if (!validation()) {
             return
         }
-        console.log(name, price, image)
         resetField()
     }
+    // update item
+    const onUpdate = () => {
+        if (!validation()) {
+            return
+        }
+        resetField()
+    }
+
+    // add image
     const pickImage = async () => {
         const result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -63,6 +71,31 @@ const create = () => {
             setImage(result.assets[0].uri);
           }
       
+    }
+    // action
+    const onSubmit = () => {
+        if(isUpdating) {
+            onUpdate()
+        } else {
+            onCreate()
+        }
+    }
+    // delete
+    const onDelete = () => {
+        console.log('Delete !!!!')
+    }
+    // confirmDelete 
+    const confirmDelete = () => {
+        Alert.alert('Confirm', 'Are you sure you want to delete this product', [
+            {
+                text: 'Cancel'
+            },
+            {
+                text: 'Delete',
+                style: 'destructive',
+                onPress: onDelete
+            }
+        ])
     }
     return (
         <View style={styles.create}>
@@ -85,7 +118,8 @@ const create = () => {
                 onChangeText={setPrice}
             />
             <Text style={{ color: 'red' }}>{error}</Text>
-            <Button text='Create' onPress={() => onCreate()} />
+            <Button text={isUpdating ? 'Update' : 'Create'} onPress={() => onSubmit()} />
+            {isUpdating && <Text style={styles.textButton} onPress={() => confirmDelete()}>Delete</Text>}
         </View>
     )
 }
