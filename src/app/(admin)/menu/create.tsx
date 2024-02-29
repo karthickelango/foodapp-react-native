@@ -2,11 +2,14 @@ import { StyleSheet, Text, View, TextInput, Image } from 'react-native'
 import React, { useState } from 'react'
 import Button from '@/src/components/button'
 import Colors from '@/src/constants/Colors'
+import * as ImagePicker from 'expo-image-picker'
 
 const create = () => {
     const [name, setName] = useState('')
     const [price, setPrice] = useState('')
     const [error, setError] = useState('')
+    const [image, setImage] = useState('');
+
     // defaultImg
     const defaultImg = 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png'
 
@@ -42,10 +45,23 @@ const create = () => {
         console.log(name, price)
         resetField()
     }
+    const pickImage = async () => {
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+        console.log(result);
+        if (!result.canceled) {
+            setImage(result.assets[0].uri);
+          }
+      
+    }
     return (
         <View style={styles.create}>
-            <Image source={{ uri: defaultImg }} style={styles.image}/>
-            <Text style={styles.textButton}>Select image</Text>
+            <Image source={{ uri: image || defaultImg }} style={styles.image} />
+            <Text style={styles.textButton} onPress={pickImage}>Select image</Text>
             <Text style={styles.label}>Name</Text>
             <TextInput
                 placeholder='Name'
@@ -61,7 +77,7 @@ const create = () => {
                 value={price}
                 onChangeText={setPrice}
             />
-            <Text style={{color: 'red'}}>{error}</Text>
+            <Text style={{ color: 'red' }}>{error}</Text>
             <Button text='Create' onPress={() => onCreate()} />
         </View>
     )
