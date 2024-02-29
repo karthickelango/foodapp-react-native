@@ -1,5 +1,9 @@
-import {  Stack } from 'expo-router';
+import { Stack } from 'expo-router';
 
-export default function AuthLayout() {
-  return <Stack />;
+export default function MenuStack() {
+  return (
+    <Stack>
+      <Stack.Screen name='list' options={{ headerShown: false }} />
+    </Stack>
+  )
 };
