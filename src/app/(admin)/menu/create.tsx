@@ -8,7 +8,7 @@ const create = () => {
     const [name, setName] = useState('')
     const [price, setPrice] = useState('')
     const [error, setError] = useState('')
-    const [image, setImage] = useState('');
+    const [image, setImage] = useState<string | null>(null);
 
     // defaultImg
     const defaultImg = 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png'
@@ -42,7 +42,7 @@ const create = () => {
         if (!validation()) {
             return
         }
-        console.log(name, price)
+        console.log(name, price, image)
         resetField()
     }
     const pickImage = async () => {
