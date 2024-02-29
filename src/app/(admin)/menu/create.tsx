@@ -3,13 +3,18 @@ import React, { useState } from 'react'
 import Button from '@/src/components/button'
 import Colors from '@/src/constants/Colors'
 import * as ImagePicker from 'expo-image-picker'
-import { Stack } from 'expo-router'
+import { Stack, useLocalSearchParams } from 'expo-router'
+import products from '@/assets/data/products'
 
 const create = () => {
     const [name, setName] = useState('')
     const [price, setPrice] = useState('')
     const [error, setError] = useState('')
     const [image, setImage] = useState<string | null>(null);
+    const { id } = useLocalSearchParams()
+    const isUpdating = !!id
+
+    const product = products.find(p => p.id.toString() === id)
 
     // defaultImg
     const defaultImg = 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png'
@@ -61,8 +66,8 @@ const create = () => {
     }
     return (
         <View style={styles.create}>
-            <Stack.Screen options={{ title: 'Create product' }}/>
-            <Image source={{ uri: image || defaultImg }} style={styles.image} />
+            <Stack.Screen options={{ title: isUpdating ? 'Update product' : 'Create product' }}/>
+            <Image source={{ uri: isUpdating ? product?.image :  image || defaultImg }} style={styles.image} />
             <Text style={styles.textButton} onPress={pickImage}>Select image</Text>
             <Text style={styles.label}>Name</Text>
             <TextInput
