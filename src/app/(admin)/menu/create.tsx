@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import Button from '@/src/components/button'
 import Colors from '@/src/constants/Colors'
 import * as ImagePicker from 'expo-image-picker'
+import { Stack } from 'expo-router'
 
 const create = () => {
     const [name, setName] = useState('')
@@ -60,6 +61,7 @@ const create = () => {
     }
     return (
         <View style={styles.create}>
+            <Stack.Screen options={{ title: 'Create product' }}/>
             <Image source={{ uri: image || defaultImg }} style={styles.image} />
             <Text style={styles.textButton} onPress={pickImage}>Select image</Text>
             <Text style={styles.label}>Name</Text>
