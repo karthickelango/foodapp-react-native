@@ -1,18 +1,35 @@
 import { StyleSheet, Text, View, TextInput, Image, Alert } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from '@/src/components/button'
 import Colors from '@/src/constants/Colors'
 import * as ImagePicker from 'expo-image-picker'
-import { Stack, useLocalSearchParams } from 'expo-router'
+import { Stack, useLocalSearchParams, useRouter } from 'expo-router'
 import products from '@/assets/data/products'
+import { useDeleteProduct, useInsertProduct, useProduct, useUpdateProduct } from '@/src/api/products'
 
 const create = () => {
-    const { id } = useLocalSearchParams()
+    const { id: idString } = useLocalSearchParams()
+    const id = parseFloat(typeof idString === 'string' ? idString : idString[0])
+
     const isUpdating = !!id
-    // get product
-    const product = products.find(p => p.id.toString() === id)
     // defaultImg
     const defaultImg = 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png'
+
+    // api call
+    const { mutate: insertProduct } = useInsertProduct()
+    const { mutate: updateProduct } = useUpdateProduct()
+    const { data: updatingProduct } = useProduct(id)
+    const {mutate: deleteProduct} = useDeleteProduct()
+
+    useEffect(() => {
+        if (updatingProduct) {
+            setName(updatingProduct.name)
+            setPrice(updatingProduct.price.toString())
+            setImage(updatingProduct.image)
+        }
+    }, [updatingProduct])
+
+    const router = useRouter()
 
     const [image, setImage] = useState<string | null>(null);
     const [name, setName] = useState('')
@@ -48,14 +65,25 @@ const create = () => {
         if (!validation()) {
             return
         }
-        resetField()
+        insertProduct({ name, price: parseFloat(price), image }, {
+            onSuccess: () => {
+                resetField()
+                router.back()
+            }
+        })
     }
+
     // update item
     const onUpdate = () => {
         if (!validation()) {
             return
         }
-        resetField()
+        updateProduct({ id, name, price: parseFloat(price), image }, {
+            onSuccess: () => {
+                resetField()
+                router.back()
+            }
+        })
     }
 
     // add image
@@ -66,15 +94,14 @@ const create = () => {
             aspect: [4, 3],
             quality: 1,
         });
-        console.log(result);
         if (!result.canceled) {
             setImage(result.assets[0].uri);
-          }
-      
+        }
+
     }
     // action
     const onSubmit = () => {
-        if(isUpdating) {
+        if (isUpdating) {
             onUpdate()
         } else {
             onCreate()
@@ -82,7 +109,12 @@ const create = () => {
     }
     // delete
     const onDelete = () => {
-        console.log('Delete !!!!')
+        deleteProduct(id, {
+            onSuccess: () => {
+                resetField()
+                router.replace('/(admin)')
+            }
+        })
     }
     // confirmDelete 
     const confirmDelete = () => {
@@ -99,8 +131,8 @@ const create = () => {
     }
     return (
         <View style={styles.create}>
-            <Stack.Screen options={{ title: isUpdating ? 'Update product' : 'Create product' }}/>
-            <Image source={{ uri: isUpdating ? product?.image :  image || defaultImg }} style={styles.image} />
+            <Stack.Screen options={{ title: isUpdating ? 'Update product' : 'Create product' }} />
+            <Image source={{ uri: image || defaultImg}} style={styles.image} />
             <Text style={styles.textButton} onPress={pickImage}>Select image</Text>
             <Text style={styles.label}>Name</Text>
             <TextInput
