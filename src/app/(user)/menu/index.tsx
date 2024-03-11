@@ -4,7 +4,7 @@ import {useProductList} from '@/src/api/products';
 
 export default function MenuScreen() {
   // useQuery hook
-  const {data, error, isLoading} = useProductList()
+  const {data: products, error, isLoading} = useProductList()
   
   if(isLoading) {
     return <ActivityIndicator />
@@ -15,7 +15,7 @@ export default function MenuScreen() {
 
   return (
     <FlatList
-      data={data}
+      data={products}
       renderItem={({ item }) => <ProductListItem product={item} />}
       numColumns={2} 
       contentContainerStyle={{gap:10, padding:10}}
