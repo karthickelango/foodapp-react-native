@@ -8,7 +8,7 @@ import { Link } from 'expo-router'
 import Colors from '../constants/Colors'
 
 const cart = () => {
-    const { items, total } = useCart()
+    const { items, total, checkout } = useCart()
     return (
         <View style={{ padding: 10 }}>
             <FlatList
@@ -20,7 +20,7 @@ const cart = () => {
                 items.length > 0 ?
                     <>
                         <Text style={styles.total}>Total: ${total.toFixed(2)}</Text>
-                        <Button text='Checkout' />
+                        <Button text='Checkout' onPress={checkout}/>
                     </>
                     :
                     <>
