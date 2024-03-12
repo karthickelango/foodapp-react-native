@@ -8,10 +8,11 @@ import products from '@/assets/data/products'
 import { useDeleteProduct, useInsertProduct, useProduct, useUpdateProduct } from '@/src/api/products'
 
 const create = () => {
-    const { id: idString } = useLocalSearchParams()
-    const id = parseFloat(typeof idString === 'string' ? idString : idString[0])
+    const { id } = useLocalSearchParams()
 
     const isUpdating = !!id
+    const router = useRouter()
+
     // defaultImg
     const defaultImg = 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png'
 
@@ -28,8 +29,6 @@ const create = () => {
             setImage(updatingProduct.image)
         }
     }, [updatingProduct])
-
-    const router = useRouter()
 
     const [image, setImage] = useState<string | null>(null);
     const [name, setName] = useState('')

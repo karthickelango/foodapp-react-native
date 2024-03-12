@@ -63,20 +63,18 @@ const CartProvider = ({ children }: PropsWithChildren) => {
         })
     }
     const saveOrderItems = (order: Tables<'orders'>) => {
-        const item1 = items[0];
-        insertOrderItems(
-            {
-                order_id: order.id,
-                product_id: item1.product_id,
-                quantity: item1.quantity,
-                size: item1.size
-            },
-            {
-                onSuccess() {
-                    clearCart()
-                    router.push(`/(user)/orders/${order.id}`)
-                }
-            })
+        const orderItems = items.map((cartItem) => ({
+            order_id: order.id,
+            product_id: cartItem.product_id,
+            quantity: cartItem.quantity,
+            size: cartItem.size
+        }));
+        insertOrderItems(orderItems, {
+            onSuccess() {
+                clearCart()
+                router.push(`/(user)/orders/${order.id}`)
+            }
+        })
     }
     return (
         <CartContex.Provider value={{ items, addItem, updateQuantity, total, checkout }}>

@@ -8,7 +8,7 @@ export const useAdminOrderList = ({ archived = false }) => {
     return useQuery({
         queryKey: ['orders', {archived}],
         queryFn: async () => {
-            const { data, error } = await supabase.from('orders').select('*').in('status', statuses)
+            const { data, error } = await supabase.from('orders').select('*').in('status', statuses).order('created_at', {ascending: false})
             if (error) {
                 throw new Error(error.message)
             }
@@ -17,7 +17,7 @@ export const useAdminOrderList = ({ archived = false }) => {
     })
 }
 
-// get order by id api
+// get order by user id api
 export const useMyOrderList = () => {
     const {session} = useAuth()
     const id = session?.user.id
@@ -25,7 +25,7 @@ export const useMyOrderList = () => {
         queryKey: ['orders', {userId: id}],
         queryFn: async () => {
             if(!id) return null
-            const { data, error } = await supabase.from('orders').select('*').eq('user_id', id)
+            const { data, error } = await supabase.from('orders').select('*').eq('user_id', id).order('created_at', {ascending: false})
             if (error) {
                 throw new Error(error.message)
             }
@@ -35,12 +35,13 @@ export const useMyOrderList = () => {
 }
 
 
-// get order by id api
+// get order by order id api
 export const useOrderDetails = (id: number) => {
     return useQuery({
         queryKey: ['orders', id],
         queryFn: async () => {
-            const { data, error } = await supabase.from('orders').select('*').eq('id', id).single()
+            const { data, error } = await supabase.from('orders')
+            .select('*, order_items(*, product(*))').eq('id', id).single()
             if (error) {
                 throw new Error(error.message)
             }
