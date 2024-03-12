@@ -1,10 +1,10 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
 import React from 'react';
 import Colors from '../constants/Colors';
-import { OrderItem } from '../types';
+import { Tables } from '../types';
 
 type OrderItemListItemProps = {
-  item: OrderItem;
+  item: {product: Tables<'product'>} & Tables<'order_items'>;
 };
 
 // default image
