@@ -9,6 +9,7 @@ import { PizzaSize } from '@/src/types'
 import { useRouter } from 'expo-router'
 import { FontAwesome } from '@expo/vector-icons'
 import { useProduct } from '@/src/api/products'
+import RemoteImage from '@/src/components/RemoteImage'
 
 const productDetailsPage = () => {
   const { id: idString } = useLocalSearchParams()
@@ -27,10 +28,10 @@ const productDetailsPage = () => {
   }
   // default image
   const defaultImg = 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png'
-  if(isLoading) {
+  if (isLoading) {
     return <ActivityIndicator />
   }
-  
+
   if (!product) {
     return <Text>Item not found</Text>
   }
@@ -54,7 +55,11 @@ const productDetailsPage = () => {
         ),
       }} />
       <Stack.Screen options={{ title: `${product.name}` }} />
-      <Image style={styles.image} source={{ uri: product.image || defaultImg }} resizeMode='contain' />
+      <RemoteImage
+        path={product.image}
+        fallback={defaultImg}
+        style={styles.image}
+        resizeMode='contain' />
       <Text style={styles.title}>{product.name}</Text>
       <Text style={styles.price}>${product.price}</Text>
     </View>

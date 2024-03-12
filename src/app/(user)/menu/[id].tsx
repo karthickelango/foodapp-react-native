@@ -7,15 +7,16 @@ import Button from '@/src/components/button'
 import { useCart } from '@/src/provider/cartProvider'
 import { PizzaSize } from '@/src/types'
 import { useRouter } from 'expo-router'
-import {useProduct} from '@/src/api/products'
+import { useProduct } from '@/src/api/products'
+import RemoteImage from '@/src/components/RemoteImage'
 
 
 const sizes: PizzaSize[] = ['S', 'M', 'L', 'XL']
 const productDetailsPage = () => {
-  const { id: idString  } = useLocalSearchParams()
+  const { id: idString } = useLocalSearchParams()
   const id = parseFloat(typeof idString === 'string' ? idString : idString[0])
 
-  const { data: product, isLoading} = useProduct(id)
+  const { data: product, isLoading } = useProduct(id)
 
   const navigate = useRouter()
   const { addItem } = useCart()
@@ -32,7 +33,7 @@ const productDetailsPage = () => {
   // default image
   const defaultImg = 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png'
   //loading state
-  if(isLoading) {
+  if (isLoading) {
     return <ActivityIndicator />
   }
 
@@ -42,7 +43,12 @@ const productDetailsPage = () => {
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ title: 'Details' }} />
-      <Image style={styles.image} source={{ uri: product.image || defaultImg }} resizeMode='contain' />
+      <RemoteImage
+        path={product.image}
+        fallback={defaultImg}
+        style={styles.image}
+        resizeMode='contain'
+      />
       <Text style={styles.title}>{product.name}</Text>
       <Text style={styles.title}>Select Size</Text>
       <View style={styles.sizes}>

@@ -2,6 +2,7 @@ import Colors from '@/src/constants/Colors';
 import { StyleSheet, Text, Image, Pressable } from 'react-native';
 import { Product } from '../types';
 import { Link, useSegments } from 'expo-router';
+import RemoteImage from './RemoteImage';
 
 
 // add type
@@ -17,7 +18,11 @@ const ProductListItem = ({ product }: ProductListItemProps) => {
     return (
         <Link href={`/${segment[0]}/menu/${product.id}`} asChild>
             <Pressable style={styles.container} key={product.id}>
-                <Image style={styles.image} source={{ uri: product.image || defaultImg }} resizeMode='contain' />
+                <RemoteImage
+                    path={product.image}
+                    fallback={defaultImg}
+                    style={styles.image}
+                    resizeMode='contain' />
                 <Text style={styles.title}>{product.name}</Text>
                 <Text style={styles.price}>${product.price}</Text>
             </Pressable>
