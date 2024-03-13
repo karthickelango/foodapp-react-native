@@ -77,11 +77,12 @@ const create = () => {
     }
 
     // update item
-    const onUpdate = () => {
+    const onUpdate = async () => {
         if (!validation()) {
             return
         }
-        updateProduct({ id, name, price: parseFloat(price), image }, {
+        const imagePath = await uploadImage()
+        updateProduct({ id, name, price: parseFloat(price), image: imagePath }, {
             onSuccess: () => {
                 resetField()
                 router.back()
