@@ -16,7 +16,7 @@ function TabBarIcon(props: {
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  const {isAdmin} = useAuth()
+  const { isAdmin } = useAuth()
 
   // if(!isAdmin) {
   //   return <Redirect href={'/'}/>
@@ -28,7 +28,7 @@ export default function TabLayout() {
         tabBarActiveTintColor: Colors.light.background,
         tabBarInactiveTintColor: "#F2F2F2",
         tabBarStyle: {
-          backgroundColor:Colors.light.tint
+          backgroundColor: Colors.light.tint
         },
         // Disable the static render of the header on web
         // to prevent a hydration error in React Navigation v6.
@@ -49,6 +49,13 @@ export default function TabLayout() {
           title: 'Orders',
           headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="list" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
         }}
       />
     </Tabs>

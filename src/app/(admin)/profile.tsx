@@ -9,6 +9,7 @@ const ProfileScreen = () => {
   const handelSignOut = async () => {
     const response = await supabase.auth.signOut()
   }
+
   return (
     <View>
       <Text>{profile?.username}</Text>
