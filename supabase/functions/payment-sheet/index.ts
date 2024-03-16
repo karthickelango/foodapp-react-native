@@ -3,17 +3,26 @@
 // This enables autocomplete, go to definition, etc.
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { stripe } from '../_utils/stripe.ts'
+import { createOrRetrieveProfile } from '../_utils/supabase.ts';
 
-serve(async (req) => {
+serve(async (req: Request) => {
   try {
     const { amount } = await req.json()
+    const customer = await createOrRetrieveProfile(req)
+    const ephemeralKey = await stripe.ephemeralKeys.create(
+      { customer: customer },
+      { apiVersion: "2020-08-27" }
+    );
     const paymentIntent = await stripe.paymentIntents.create({
       amount: amount,
-      currency: 'usd'
+      currency: 'INR',
+      customer: customer
     })
     const res = {
       paymentIntent: paymentIntent.client_secret,
-      publishablekey: Deno.env.get('EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY')
+      publishablekey: Deno.env.get('EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY'),
+      ephemeralKey: ephemeralKey.secret,
+      customer: customer,
     }
     return new Response(
       JSON.stringify(res),
