@@ -4,8 +4,6 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { stripe } from '../_utils/stripe.ts'
 
-console.log("Hello from Functions!")
-
 serve(async (req) => {
   try {
     const { amount } = await req.json()

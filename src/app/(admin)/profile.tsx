@@ -8,7 +8,6 @@ const ProfileScreen = () => {
 
   const handelSignOut = async () => {
     const response = await supabase.auth.signOut()
-    console.log(response)
   }
 
   return (
