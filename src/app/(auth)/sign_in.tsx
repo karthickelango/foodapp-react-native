@@ -5,12 +5,13 @@ import Colors from '../../constants/Colors';
 import { Link, Stack } from 'expo-router';
 import { supabase } from '@/src/lib/supabase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAuth } from '@/src/provider/AuthProvider';
 
 const SignInScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false)
-
+  const {fetchSession} = useAuth()
 
   // signup
   const handelSignIn = async () => {
@@ -22,6 +23,7 @@ const SignInScreen = () => {
       if (error) {
         Alert.alert(error.message)
       }
+      fetchSession()
       setLoading(false)
     } catch (error) {
       console.log(error)
