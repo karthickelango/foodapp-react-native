@@ -32,7 +32,6 @@ const NotificationProvider = ({ children }: PropsWithChildren) => {
 
         responseListener.current =
             Notifications.addNotificationResponseReceivedListener((response) => {
-                console.log(response);
             });
 
         return () => {
@@ -46,9 +45,6 @@ const NotificationProvider = ({ children }: PropsWithChildren) => {
             }
         };
     }, []);
-
-    console.log(notification);
-    console.log(expoPushToken);
 
     return <>{children}</>;
 };

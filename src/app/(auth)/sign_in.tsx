@@ -1,9 +1,10 @@
 import { View, Text, TextInput, StyleSheet, Alert } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '../../components/button';
 import Colors from '../../constants/Colors';
 import { Link, Stack } from 'expo-router';
 import { supabase } from '@/src/lib/supabase';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignInScreen = () => {
   const [email, setEmail] = useState('');
@@ -13,16 +14,19 @@ const SignInScreen = () => {
 
   // signup
   const handelSignIn = async () => {
-    setLoading(true)
-    const { error } = await supabase.auth.signInWithPassword(
-      { email, password }
+    try {
+      setLoading(true)
+      const { data, error } = await supabase.auth.signInWithPassword(
+        { email, password }
       )
-    if (error) {
-      Alert.alert(error.message)
+      if (error) {
+        Alert.alert(error.message)
+      }
+      setLoading(false)
+    } catch (error) {
+      console.log(error)
     }
-    setLoading(false)
   }
-
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ title: 'Sign in' }} />
@@ -44,7 +48,7 @@ const SignInScreen = () => {
         secureTextEntry
       />
 
-      <Button onPress={() => handelSignIn()} disabled={loading}  text={loading? "Signing in..." : "Sign in"} />
+      <Button onPress={() => handelSignIn()} disabled={loading} text={loading ? "Signing in..." : "Sign in"} />
       <Link href="/(auth)/sign_up" style={styles.textButton}>
         Create an account
       </Link>

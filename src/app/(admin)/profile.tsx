@@ -2,6 +2,7 @@ import { View, Text } from 'react-native'
 import Button from '@/src/components/button'
 import { supabase } from '@/src/lib/supabase'
 import { useAuth } from '@/src/provider/AuthProvider'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const ProfileScreen = () => {
   const {profile} = useAuth()

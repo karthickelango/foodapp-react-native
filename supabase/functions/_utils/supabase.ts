@@ -21,11 +21,9 @@ export const createOrRetrieveProfile = async (req: Request) => {
     if(error || !profile) {
         throw new Error('profile not found');
     }
-    console.log(profile)
     if(profile.stripe_customer_id) {
         return profile.stripe_customer_id
     }
-    console.log('in')
     // create stripe customer
     // const customer = await stripe.customers.create({
     //     email: user.email,
