@@ -33,7 +33,7 @@ const SignUpScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ title: 'Sign up' }} />
+      <Stack.Screen options={{headerShown: false}} />
       <Text style={styles.header}>Sign Up</Text>
       <Text style={styles.label}>Create account as:</Text>
       <View style={styles.radioContainer}>

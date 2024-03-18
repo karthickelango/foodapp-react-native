@@ -29,8 +29,8 @@ const SignInScreen = () => {
   }
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ title: 'Sign in' }} />
-      <Text style={styles.header}>Sign In</Text>
+      <Stack.Screen options={{headerShown: false}} />
+      <Text style={styles.header}>Sign in</Text>
       <TextInput
         value={email}
         onChangeText={setEmail}
