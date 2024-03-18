@@ -34,28 +34,27 @@ const SignInScreen = () => {
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ title: 'Sign in' }} />
-
-      <Text style={styles.label}>Email</Text>
+      <Text style={styles.header}>Sign In</Text>
       <TextInput
         value={email}
         onChangeText={setEmail}
-        placeholder="jon@gmail.com"
+        placeholder="Email"
         style={styles.input}
       />
 
-      <Text style={styles.label}>Password</Text>
       <TextInput
         value={password}
         onChangeText={setPassword}
-        placeholder=""
+        placeholder="Password"
         style={styles.input}
         secureTextEntry
       />
 
       <Button onPress={() => handelSignIn()} disabled={loading} text={loading ? "Signing in..." : "Sign in"} />
-      <Link href="/(auth)/sign_up" style={styles.textButton}>
-        Create an account
-      </Link>
+      <View style={styles.message}>
+        <Text>Don't have an account? <Link href="/(auth)/sign_up" style={styles.textButton}>Sign up</Link>
+        </Text>
+      </View>
     </View>
   );
 };
@@ -79,11 +78,17 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   textButton: {
-    alignSelf: 'center',
     fontWeight: 'bold',
     color: Colors.light.tint,
-    marginVertical: 10,
   },
+  message: {
+    alignItems: 'center'
+  },
+  header: {
+    fontSize: 40,
+    textAlign: 'center',
+    paddingBottom: 20
+  }
 });
-
+``
 export default SignInScreen;

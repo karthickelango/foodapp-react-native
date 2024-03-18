@@ -14,8 +14,6 @@ const SignUpScreen = () => {
   const [username, setUserName] = useState('');
   const [loading, setLoading] = useState(false)
   const [accountRole, setAccountRole] = useState('USER');
-
-  console.log(accountRole)
   // signup
   const handelSignUp = async () => {
     setLoading(true)
@@ -36,14 +34,13 @@ const SignUpScreen = () => {
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ title: 'Sign up' }} />
+      <Text style={styles.header}>Sign Up</Text>
       <Text style={styles.label}>Create account as:</Text>
       <View style={styles.radioContainer}>
         <RadioButton.Group onValueChange={role => setAccountRole(role)} value={accountRole}>
           <View style={styles.radioButton}>
             <RadioButton value="USER" />
-            <Text>User</Text>
-          </View>
-          <View style={styles.radioButton}>
+            <Text style={{marginRight: 20}}>User</Text>
             <RadioButton value="ADMIN" />
             <Text>Admin</Text>
           </View>
@@ -58,7 +55,7 @@ const SignUpScreen = () => {
       <TextInput
         value={email}
         onChangeText={setEmail}
-        placeholder="user@gmail.com"
+        placeholder="Email"
         style={styles.input}
       />
       <TextInput
@@ -69,10 +66,11 @@ const SignUpScreen = () => {
         secureTextEntry
       />
 
-      <Button onPress={() => handelSignUp()} disabled={loading} text={loading ? "Creating account..." : "Create account"} />
-      <Link href="/(auth)/sign_in" style={styles.textButton}>
-        Sign in
-      </Link>
+      <Button onPress={() => handelSignUp()} disabled={loading} text={loading ? "Signing up..." : "Sign up"} />
+      <View style={styles.message}>
+        <Text>Already have an account? <Link href="/(auth)/sign_in" style={styles.textButton}>Sign in</Link>
+        </Text>
+      </View>
     </View>
   );
 };
@@ -111,6 +109,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: 20,
   },
+  message: {
+    alignItems: 'center'
+  },
+  header: {
+    fontSize: 40,
+    textAlign: 'center',
+    paddingBottom: 20
+  }
 });
 
 export default SignUpScreen;
