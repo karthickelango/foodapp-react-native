@@ -9,6 +9,7 @@ import * as FileSystem from 'expo-file-system'
 import { randomUUID } from 'expo-crypto'
 import { supabase } from '@/src/lib/supabase'
 import { decode } from 'base64-arraybuffer'
+import RemoteImage from '@/src/components/RemoteImage'
 
 const create = () => {
     const { id } = useLocalSearchParams()
@@ -37,6 +38,7 @@ const create = () => {
     const [name, setName] = useState('')
     const [price, setPrice] = useState('')
     const [error, setError] = useState('')
+    const [imageLocal, setImageLocal] = useState(true)
 
 
     // validation
@@ -92,6 +94,7 @@ const create = () => {
 
     // add image
     const pickImage = async () => {
+        setImageLocal(false)
         const result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
@@ -100,6 +103,8 @@ const create = () => {
         });
         if (!result.canceled) {
             setImage(result.assets[0].uri);
+        } else {
+            setImageLocal(true)
         }
 
     }
@@ -154,7 +159,16 @@ const create = () => {
     return (
         <View style={styles.create}>
             <Stack.Screen options={{ title: isUpdating ? 'Update product' : 'Create product' }} />
-            <Image source={{ uri: image || defaultImg }} style={styles.image} />
+            {
+                isUpdating && imageLocal ?
+                    <RemoteImage
+                        path={image}
+                        fallback={defaultImg}
+                        style={styles.image}
+                        resizeMode='contain' /> :
+                    <Image source={{ uri: image || defaultImg }} style={styles.image} />
+
+            }
             <Text style={styles.textButton} onPress={pickImage}>Select image</Text>
             <Text style={styles.label}>Name</Text>
             <TextInput

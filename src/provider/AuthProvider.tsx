@@ -48,8 +48,6 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
             setProfile(null);
         })
     }, [])
-    console.log(session)
-    console.log(profile)
 
     return (
         <AuthContext.Provider value={{ session, loading, profile, isAdmin: profile?.group === 'ADMIN', fetchSession }}>
