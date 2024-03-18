@@ -1,9 +1,10 @@
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 import React from 'react';
 import Button from '../components/button';
 import { Link, Redirect } from 'expo-router';
 import { useAuth } from '../provider/AuthProvider';
 import { supabase } from '../lib/supabase';
+import Colors from '../constants/Colors';
 
 const index = () => {
   const { session, loading, isAdmin, profile } = useAuth()
@@ -13,20 +14,32 @@ const index = () => {
   if (!session) {
     return <Redirect href={'/sign_in'} />
   }
-  if (profile?.group != 'ADMIN') {
-    return <Redirect href={'/(user)'}/>
-  }  
   return (
-    <View style={{ flex: 1, justifyContent: 'center', padding: 10 }}>
-      <Link href={'/(user)'} asChild>
-        <Button text="User" />
-      </Link>
-      <Link href={'/(admin)'} asChild>
-        <Button text="Admin" />
-      </Link>
-      <Button onPress={() => supabase.auth.signOut()} text="Sign out" />
-    </View>
+    <>
+      {
+        session.user.user_metadata.user_role == 'ADMIN' ?
+          <View style={{ flex: 1, justifyContent: 'center', padding: 10 }}>
+            <Link href={'/(user)'} asChild>
+              <Button text="User" />
+            </Link>
+            <Link href={'/(admin)'} asChild>
+              <Button text="Admin" />
+            </Link>
+            <Text style={styles.textButton} onPress={() => supabase.auth.signOut()}>Sign out</Text>
+          </View> :
+          <Redirect href={'/(user)'} />
+      }
+
+    </>
   );
 };
 
+const styles = StyleSheet.create({
+  textButton: {
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    color: Colors.light.tint,
+    marginVertical: 10,
+  },
+});
 export default index;

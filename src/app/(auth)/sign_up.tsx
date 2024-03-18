@@ -5,16 +5,28 @@ import Colors from '../../constants/Colors';
 import { Link, Stack } from 'expo-router';
 import { supabase } from '@/src/lib/supabase';
 import { isLoading } from 'expo-font';
+import { RadioButton } from 'react-native-paper';
+
 
 const SignUpScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [username, setUserName] = useState('');
   const [loading, setLoading] = useState(false)
+  const [accountRole, setAccountRole] = useState('USER');
 
+  console.log(accountRole)
   // signup
   const handelSignUp = async () => {
     setLoading(true)
-    const { error } = await supabase.auth.signUp({ email, password })
+    const { data, error } = await supabase.auth.signUp({
+      email: email, password: password, options: {
+        data: {
+          full_name: username,
+          user_role: accountRole
+        }
+      }
+    })
     if (error) {
       Alert.alert(error.message)
     }
@@ -24,20 +36,35 @@ const SignUpScreen = () => {
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ title: 'Sign up' }} />
-
-      <Text style={styles.label}>Email</Text>
+      <Text style={styles.label}>Create account as:</Text>
+      <View style={styles.radioContainer}>
+        <RadioButton.Group onValueChange={role => setAccountRole(role)} value={accountRole}>
+          <View style={styles.radioButton}>
+            <RadioButton value="USER" />
+            <Text>User</Text>
+          </View>
+          <View style={styles.radioButton}>
+            <RadioButton value="ADMIN" />
+            <Text>Admin</Text>
+          </View>
+        </RadioButton.Group>
+      </View>
+      <TextInput
+        value={username}
+        onChangeText={setUserName}
+        placeholder="Name"
+        style={styles.input}
+      />
       <TextInput
         value={email}
         onChangeText={setEmail}
-        placeholder="jon@gmail.com"
+        placeholder="user@gmail.com"
         style={styles.input}
       />
-
-      <Text style={styles.label}>Password</Text>
       <TextInput
         value={password}
         onChangeText={setPassword}
-        placeholder=""
+        placeholder="Password"
         style={styles.input}
         secureTextEntry
       />
@@ -73,6 +100,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: Colors.light.tint,
     marginVertical: 10,
+  },
+  radioContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  radioButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 20,
   },
 });
 
