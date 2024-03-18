@@ -50,7 +50,7 @@ const SignInScreen = () => {
         secureTextEntry
       />
 
-      <Button onPress={() => handelSignIn()} disabled={loading} text={loading ? "Signing in..." : "Sign in"} />
+      <Button style={styles.button} onPress={() => handelSignIn()} disabled={loading} text={loading ? "Signing in..." : "Sign in"} />
       <View style={styles.message}>
         <Text>Don't have an account? <Link href="/(auth)/sign_up" style={styles.textButton}>Sign up</Link>
         </Text>
@@ -90,5 +90,4 @@ const styles = StyleSheet.create({
     paddingBottom: 20
   }
 });
-``
 export default SignInScreen;
