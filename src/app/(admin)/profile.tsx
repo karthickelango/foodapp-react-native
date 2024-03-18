@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, NativeModules } from 'react-native'
 import Button from '@/src/components/button'
 import { supabase } from '@/src/lib/supabase'
 import { useAuth } from '@/src/provider/AuthProvider'
@@ -7,19 +7,17 @@ import { Link } from 'expo-router'
 import Colors from '@/src/constants/Colors'
 
 const ProfileScreen = () => {
-  const { profile } = useAuth()
+  const { session } = useAuth()
 
   const handelSignOut = async () => {
     const response = await supabase.auth.signOut()
+    NativeModules.DevSettings.reload();
   }
 
   return (
     <View>
-      <Text>{profile?.full_name}</Text>
+      <Text>{session?.user.user_metadata.full_name}</Text>
       <Button text='Sign out' onPress={() => handelSignOut()}></Button>
-      <Link href="/" style={styles.textButton}>
-        Back to home
-      </Link>
     </View>
   )
 }

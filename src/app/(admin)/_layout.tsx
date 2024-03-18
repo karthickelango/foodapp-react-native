@@ -18,9 +18,9 @@ export default function TabLayout() {
   const colorScheme = useColorScheme();
   const { session } = useAuth()
 
-  if(session.user.user_metadata.user_role != 'ADMIN') {
-    return <Redirect href={'/'}/>
-  }
+  // if(session.user.user_metadata.user_role != 'ADMIN') {
+  //   return <Redirect href={'/'}/>
+  // }
 
   return (
     <Tabs

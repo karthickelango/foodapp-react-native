@@ -7,21 +7,18 @@ import { Link } from 'expo-router'
 import Colors from '@/src/constants/Colors'
 
 const ProfileScreen = () => {
-  const { profile, session } = useAuth()
-
+  const { session } = useAuth()
   const handelSignOut = async () => {
-    const response = await supabase.auth.signOut()
+    try {
+      const response = await supabase.auth.signOut()
+    } catch(error) {
+      console.log(error)
+    }
   }
   return (
     <View>
-      <Text>{profile?.full_name}</Text>
+      <Text>{session?.user.user_metadata.full_name}</Text>
       <Button text='Sign out' onPress={() => handelSignOut()}></Button>
-      {
-        session?.user.user_metadata.user_role === 'ADMIN' &&
-        <Link href="/" style={styles.textButton}>
-          Back to home
-        </Link>
-      }
     </View>
   )
 }

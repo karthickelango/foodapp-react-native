@@ -6,15 +6,11 @@ type AuthData = {
     session: Session | null;
     loading: boolean,
     profile: any,
-    isAdmin: boolean,
-    fetchSession: () => void
 }
 const AuthContext = createContext<AuthData>({
     session: null,
     loading: true,
     profile: null,
-    isAdmin: false,
-    fetchSession: () => { }
 });
 
 const AuthProvider = ({ children }: PropsWithChildren) => {
@@ -45,12 +41,11 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
         fetchSession()
         supabase.auth.onAuthStateChange((_event, session) => {
             setSession(session)
-            setProfile(null);
         })
     }, [])
 
     return (
-        <AuthContext.Provider value={{ session, loading, profile, isAdmin: profile?.group === 'ADMIN', fetchSession }}>
+        <AuthContext.Provider value={{ session, loading, profile }}>
             {children}
         </AuthContext.Provider>
 

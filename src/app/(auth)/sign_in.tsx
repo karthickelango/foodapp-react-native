@@ -11,7 +11,6 @@ const SignInScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false)
-  const { fetchSession } = useAuth()
 
   // signup
   const handelSignIn = async () => {
@@ -20,9 +19,6 @@ const SignInScreen = () => {
       const { data, error } = await supabase.auth.signInWithPassword(
         { email, password }
       )
-      if (data) {
-        fetchSession()
-      }
       if (error) {
         Alert.alert(error.message)
       }
