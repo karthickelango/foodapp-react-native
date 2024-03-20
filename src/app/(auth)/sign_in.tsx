@@ -1,16 +1,15 @@
-import { View, Text, TextInput, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Alert, Image } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Button from '../../components/button';
 import Colors from '../../constants/Colors';
 import { Link, Stack } from 'expo-router';
 import { supabase } from '@/src/lib/supabase';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useAuth } from '@/src/provider/AuthProvider';
 
 const SignInScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false)
+
 
   // signup
   const handelSignIn = async () => {
@@ -27,31 +26,34 @@ const SignInScreen = () => {
       console.log(error)
     }
   }
+
   return (
-    <View style={styles.container}>
-      <Stack.Screen options={{headerShown: false}} />
-      <Text style={styles.header}>Sign in</Text>
-      <TextInput
-        value={email}
-        onChangeText={setEmail}
-        placeholder="Email"
-        style={styles.input}
-      />
+    <>
+      <View style={styles.container}>
+        <Stack.Screen options={{ headerShown: false }} />
+        <Text style={styles.header}>Sign in</Text>
+        <TextInput
+          value={email}
+          onChangeText={setEmail}
+          placeholder="Email"
+          style={styles.input}
+        />
 
-      <TextInput
-        value={password}
-        onChangeText={setPassword}
-        placeholder="Password"
-        style={styles.input}
-        secureTextEntry
-      />
+        <TextInput
+          value={password}
+          onChangeText={setPassword}
+          placeholder="Password"
+          style={styles.input}
+          secureTextEntry
+        />
 
-      <Button style={styles.button} onPress={() => handelSignIn()} disabled={loading} text={loading ? "Signing in..." : "Sign in"} />
-      <View style={styles.message}>
-        <Text>Don't have an account? <Link href="/(auth)/sign_up" style={styles.textButton}>Sign up</Link>
-        </Text>
+        <Button style={styles.button} onPress={() => handelSignIn()} disabled={loading} text={loading ? "Signing in..." : "Sign in"} />
+        <View style={styles.message}>
+          <Text>Don't have an account? <Link href="/(auth)/sign_up" style={styles.textButton}>Sign up</Link>
+          </Text>
+        </View>
       </View>
-    </View>
+    </>
   );
 };
 
@@ -84,6 +86,11 @@ const styles = StyleSheet.create({
     fontSize: 40,
     textAlign: 'center',
     paddingBottom: 20
-  }
+  },
+  landing: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover'
+  },
 });
 export default SignInScreen;
