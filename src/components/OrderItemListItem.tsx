@@ -13,23 +13,25 @@ const defaultPizzaImage = 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/f
 
 const OrderItemListItem = ({ item }: OrderItemListItemProps) => {
   return (
-    <View style={styles.container}>
-      <RemoteImage
-        path={item.product.image}
-        fallback={defaultPizzaImage}
-        style={styles.image}
-        resizeMode='contain' />
-      <View style={{ flex: 1 }}>
-        <Text style={styles.title}>{item.product.name}</Text>
-        <View style={styles.subtitleContainer}>
-          <Text style={styles.price}>${item.product.price.toFixed(2)}</Text>
-          <Text>Size: {item.size}</Text>
+    <>
+      <View style={styles.container}>
+        <RemoteImage
+          path={item.product.image}
+          fallback={defaultPizzaImage}
+          style={styles.image}
+          resizeMode='contain' />
+        <View style={{ flex: 1 }}>
+          <Text style={styles.title}>{item.product.name}</Text>
+          <View style={styles.subtitleContainer}>
+            <Text style={styles.price}>${item.product.price.toFixed(2)}</Text>
+            <Text>Size: {item.size}</Text>
+          </View>
+        </View>
+        <View style={styles.quantitySelector}>
+          <Text style={styles.quantity}>{item.quantity}</Text>
         </View>
       </View>
-      <View style={styles.quantitySelector}>
-        <Text style={styles.quantity}>{item.quantity}</Text>
-      </View>
-    </View>
+    </>
   );
 };
 
@@ -41,6 +43,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#f2f2f2'
   },
   image: {
     width: 75,
