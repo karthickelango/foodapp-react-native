@@ -25,6 +25,7 @@ export type CartItem = {
   product_id: number;
   size: PizzaSize;
   quantity: number;
+  customer_name: string
 };
 
 export const OrderStatusList: OrderStatus[] = [

@@ -5,6 +5,7 @@ import { useInsertOrder } from "../api/orders";
 import { useRouter } from "expo-router";
 import { useInsertOrderItems } from "../api/order-items";
 import { initialisePaymentSheet, openPaymentSheet } from "../lib/stripe";
+import { useAuth } from "./AuthProvider";
 
 type CartType = {
     items: CartItem[],
@@ -27,6 +28,7 @@ const CartProvider = ({ children }: PropsWithChildren) => {
     const [items, setItems] = useState<CartItem[]>([])
     const { mutate: insertOrder } = useInsertOrder()
     const { mutate: insertOrderItems } = useInsertOrderItems()
+    const { session } = useAuth()
 
     const router = useRouter()
     // add item to cart
@@ -42,7 +44,8 @@ const CartProvider = ({ children }: PropsWithChildren) => {
             product,
             product_id: product.id,
             size,
-            quantity: 1
+            quantity: 1,
+            customer_name: session?.user.user_metadata.full_name
         }
         setItems([newCartItem, ...items])
     }
@@ -73,7 +76,8 @@ const CartProvider = ({ children }: PropsWithChildren) => {
             order_id: order.id,
             product_id: cartItem.product_id,
             quantity: cartItem.quantity,
-            size: cartItem.size
+            size: cartItem.size,
+            customer_name: cartItem.customer_name
         }));
         insertOrderItems(orderItems, {
             onSuccess() {

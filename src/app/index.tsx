@@ -18,16 +18,7 @@ const index = () => {
   return (
           <>
             {
-              session.user.user_metadata.user_role == 'ADMIN' ?
-                // <View style={{ flex: 1, justifyContent: 'center', padding: 10 }}>
-                //   <Link href={'/(user)'} asChild>
-                //     <Button text="User" />
-                //   </Link>
-                //   <Link href={'/(admin)'} asChild>
-                //     <Button text="Admin" />
-                //   </Link>
-                //   <Text style={styles.textButton} onPress={() => supabase.auth.signOut()}>Sign out</Text>
-                // </View> 
+              session.user.user_metadata.user_role == 'ADMIN' ? 
                 <Redirect href={'/(admin)'} />
                 :
                 <Redirect href={'/(user)'} />
